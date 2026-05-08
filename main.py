@@ -15,15 +15,15 @@ class MainGame:
             self._game_output()
             self._input_mgmt()
             input()
-            self._screen_reset()
+            self._screen_update()
 
     def _main_menu(self):
         """menu główne gry"""
-        self._screen_reset()
+        self._screen_update()
         print("MISTRZ KLAWIATURY\n=================\nwybierz poziom trudności:"
             "\n0 - domyślny")
         input()
-        self._screen_reset()
+        self._screen_update()
 
     def _input_mgmt(self):
         """zarządzanie wejściem programu"""
