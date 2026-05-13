@@ -5,7 +5,7 @@ class GameState:
     """klasa obsługująca odczyt i zapis stanu gry"""
     def __init__(self):
         self._path = Path('data/saved.json')
-        self.data = {'game_mode': 0}
+        self.data = {'game_mode': 0} # słownik na wszystkie dane które mją być zapisane
 
     def file_read(self):
         """metoda odczytująca stan gry z pliku"""
@@ -15,7 +15,5 @@ class GameState:
 
     def file_save(self):
         """metoda zapisująca stan gry do pliku"""
-        print("zapisuję")
-        print(self.data)
         contents = json.dumps(self.data)
         self._path.write_text(contents)
