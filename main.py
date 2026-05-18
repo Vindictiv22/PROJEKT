@@ -1,6 +1,7 @@
 from os import system
 from saves import GameState
-
+import json
+import random
 class MainGame:
     """Główna klasa zarządzająca zasobami gry"""
     
@@ -10,9 +11,24 @@ class MainGame:
         self.game_mode = 0 # poziom trudności
         self.game_state = GameState()
 
+        self._baza_slow = self._wczytaj_baze_slow()
+        self._aktualne_slowo = ""
+
+    def _wczytaj_baze_slow(self):
+        """Wczytuje plik JSON z dysku"""
+        try:
+            with open('slowa.json', 'r', encoding='utf-8') as plik:
+                return json.load(plik)
+        except FileNotFoundError:
+            # Zabezpieczenie na wypadek, gdyby pliku brakowało
+            print("Błąd: Nie znaleziono pliku slowa.json! Tworzę awaryjną bazę.")
+            return {"latwe": ["test"], "srednie": ["testowanie"], "trudne": ["autotestowanie"]}
+
     def main_loop(self):
         """Główna pętla gry zarządza kolejnością wykonywania się funkcji"""
         self._main_menu()
+        self._losuj_nowe_slowo()
+
         while self._game_running:
             self._game_output()
             self._game_input()
@@ -28,6 +44,12 @@ class MainGame:
         self._game_input()
         self._screen_update()
 
+    def _losuj_nowe_slowo(self):
+        """Losuje słowo na podstawie aktualnego game_mode"""
+        klucz_poziomu = self._tryby_tlumaczenie.get(self.game_mode, "latwe")
+        lista_slow = self._baza_slow[klucz_poziomu]
+        self._aktualne_slowo = random.choice(lista_slow)
+
     def _game_input(self):
         """zarządzanie wejściem programu"""
         self._input_string  = input()
@@ -37,6 +59,7 @@ class MainGame:
             self._make_save()
         elif self._input_string.lower() == 'read': # warunek wczytania zapisu
             self._save_read()
+            self._losuj_nowe_slowo()
 
     def _screen_update(self):
         """aktualizacja stanu ekranu"""
