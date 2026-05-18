@@ -54,16 +54,14 @@ class MainGame:
     def _make_save(self):
         """zapis stanu gry"""
         # tutaj trzeba wrzucać wszystkie pola które mają być zapisywane 
-        self.game_state.data['game_mode'] = self.game_mode
-
+        self.game_state.data["game_mode"] = self.game_mode
         self.game_state.file_save()
 
     def _save_read(self):
         """metoda wczytująca to co przekaże obiekt game_state"""
         data = self.game_state.file_read()
-        
         # tutaj są przerzucane wartości ze słownika do pól klasy   
-        self.game_mode = data['game_mode']
+        self.game_mode = data["game_mode"]
 
 def main():
     if __name__ == '__main__':
