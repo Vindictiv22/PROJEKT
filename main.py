@@ -9,6 +9,7 @@ class MainGame:
         self._input_string = "" # łańcuch z tekstem gracza
         self.game_mode = 0 # poziom trudności
         self.game_state = GameState()
+        self._target_word = "slowo" # docelowe słowo, które będzie trzeba wpisać
 
     def main_loop(self):
         """Główna pętla gry zarządza kolejnością wykonywania się funkcji"""
@@ -16,6 +17,7 @@ class MainGame:
         while self._game_running:
             self._game_output()
             self._game_input()
+            self._check_word()
             self._screen_update()
 
     def _main_menu(self):
@@ -62,6 +64,19 @@ class MainGame:
         data = self.game_state.file_read()
         # tutaj są przerzucane wartości ze słownika do pól klasy   
         self.game_mode = data["game_mode"]
+
+    def _check_word(self):
+        """Metoda sprawdzająca poprawność wpisanego słowa przez gracza"""
+        
+        if self._input_string.lower() in ['quit', 'save', 'read']:
+            return
+
+        if self._input_string == self._target_word:
+            print("Poprawne słowo\n")
+        else:
+            print("Niepoprawne słowo\n")
+
+        self._input_string = ""
 
 def main():
     if __name__ == '__main__':
