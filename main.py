@@ -3,6 +3,10 @@ import os
 import random
 import time
 from saves import GameState
+import time
+
+max_punkty = 1000
+rate_of_change_punkty = -20
 
 
 class MainGame:
@@ -12,7 +16,11 @@ class MainGame:
         self._game_running = True
         self._input_string = ""
         self.game_mode = "1"  # Zmiana na string, aby pasował do input()
+        self._game_running = True # Zacznik działania gry, ustawienie go na false zakańcza grę
+        self.game_mode = 0 # poziom trudności
+        self.game_tryb = 0 # tryb gry - nauka/wyzwanie
         self.game_state = GameState()
+        self.slowa = 0
 
         # System punktów
         self.score = -2  # Całkowity wynik gracza
@@ -43,10 +51,10 @@ class MainGame:
         self._losuj_nowe_slowo()
 
         while self._game_running:
-            self._losuj_nowe_slowo()
             self._game_output()
             self._game_input()
             self._screen_update()
+        
 
             
 
@@ -58,6 +66,8 @@ class MainGame:
             "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny | 4 - skibidi\n"
         )
         self.game_mode = input()
+        print("Wybierz tryb gry\nnauka - tryb bez presji czasu | wyzwanie - tryb w którym zdobywasz punkty\n")
+        self.game_tryb = input()
         print(
             "\n'save' wykonuje zapis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n"
         )
@@ -65,10 +75,11 @@ class MainGame:
         self._game_input()
         self._screen_update()
 
+
     def _losuj_nowe_slowo(self):
         """Losuje słowo na podstawie aktualnego game_mode"""
         lista_slow = self._baza_slow[self.game_mode]
-        self._input_string = random.choice(lista_slow)
+        self._aktualne_slowo = random.choice(lista_slow)
 
 
     def _game_input(self):
@@ -97,7 +108,7 @@ class MainGame:
         """Osobna metoda odpowiedzialna za system punktów"""
 
         # Sprawdzenie poprawności słowa (brak printów i brak time.sleep)
-        if self._input_string == self._input_string:
+        if self._input_string == self._aktualne_slowo:
             gained_points = len(self._input_string) - elapsed_time
             
             if gained_points < 2:
@@ -115,17 +126,16 @@ class MainGame:
 
     def _game_output(self):
         """Wyświetlanie stanu gry"""
-        print(f"PUNKTY: {self.score}")
+        if self.game_tryb =='wyzwanie':
+            print(f"PUNKTY: {self.score}")
         print("=================")
-        print(f"wpisz słowo: {self._input_string}")
+        print(f"wpisz słowo: {self._aktualne_slowo}")
         
         # Zapisujemy czas pokazania słowa
-        self._start_time = time.time()
+        if self.game_tryb == 'wyzwanie':
+            self._start_time = time.time()
 
-
-        # Zapisujemy czas pokazania słowa dokładnie przed inputem gracza
-        self._start_time = time.time()
-
+       
     def _make_save(self):
         """Zapis stanu gry"""
         self.game_state.data["game_mode"] = self.game_mode
