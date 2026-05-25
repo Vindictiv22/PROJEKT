@@ -1,5 +1,9 @@
 from os import system
 from saves import GameState
+import time
+
+max_punkty = 1000
+rate_of_change_punkty = -20
 
 class MainGame:
     """Główna klasa zarządzająca zasobami gry"""
@@ -8,15 +12,23 @@ class MainGame:
         self._game_running = True # Zacznik działania gry, ustawienie go na false zakańcza grę
         self._input_string = "" # łańcuch z tekstem gracza
         self.game_mode = 0 # poziom trudności
+        self.game_tryb = 0 # tryb gry - nauka/wyzwanie
         self.game_state = GameState()
+        self.punkty = 0 #punkry gracza
+        self.slowa = 0
 
     def main_loop(self):
         """Główna pętla gry zarządza kolejnością wykonywania się funkcji"""
         self._main_menu()
+        czas = time.time()
         while self._game_running:
+            if time.time() - czas >= 10.00:
+                break
             self._game_output()
             self._game_input()
             self._screen_update()
+        self._punktacja()
+        
 
     def _main_menu(self):
         """menu główne gry"""
@@ -24,9 +36,12 @@ class MainGame:
         print("MISTRZ KLAWIATURY\n=================\n"
             "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny\n")
         self.game_mode = input()
+        print("Wybierz tryb gry\nnauka - tryb bez presji czasu | wyzwanie - tryb w którym zdobywasz punkty\n")
+        self.game_tryb = input()
         print("'save' wykonuje zapis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n")
         self._game_input()
         self._screen_update()
+        self._tryb_gry()
 
     def _game_input(self):
         """zarządzanie wejściem programu"""
@@ -50,6 +65,19 @@ class MainGame:
     # że każda zmienna jest oddzielnie zapisywana/wczytywana przez dodatkowy słownik.
     # Najprościej by było poprostu zastąpić wszystkie pojedyńcze zmienne jednym dużym słownikiem,
     # do którego wszystko by było przepisywane za jednym razem.
+
+    def _tryb_gry(self):
+        if self.game_tryb == 'wyzwanie':
+            self.czas = time.time()
+
+    def _punktacja(self):
+        nowe_punkty=0
+        if self.slowa == 0:
+            time_diff = time.time() - self.czas
+            nowe_punkty += max_punkty + (rate_of_change_punkty*time_diff)
+            print("Wpisałeś wszystkie słowa!!!!!\nudało ci się zdobyć ",nowe_punkty," punktów")
+            self.punkty+=nowe_punkty
+            
 
     def _make_save(self):
         """zapis stanu gry"""
