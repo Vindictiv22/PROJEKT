@@ -1,4 +1,5 @@
 from os import system
+import time  # Moduł do odliczania czasu w sekundach
 from saves import GameState
 import json
 import random
@@ -10,6 +11,11 @@ class MainGame:
         self._input_string = "" # łańcuch z tekstem gracza
         self.game_mode = 0 # poziom trudności
         self.game_state = GameState()
+        
+        # System punktów
+        self.score = 0  # Całkowity wynik gracza
+        self._start_time = 0.0  # Moment wyświetlenia słowa na ekranie
+        self._current_word = "testowe"  # Słowo do wpisania (na potrzeby testów)
 
         self._baza_slow = self._wczytaj_baze_slow()
         self._aktualne_slowo = ""
@@ -41,7 +47,7 @@ class MainGame:
         print("MISTRZ KLAWIATURY\n=================\n"
             "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny | 4 - skibidi\n")
         self.game_mode = input()
-        print("'save' wykonuje zapis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n")
+        print("'save' wykonuje zatespis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n")
         self._game_input()
         self._screen_update()
 
@@ -78,15 +84,15 @@ class MainGame:
 
     def _make_save(self):
         """zapis stanu gry"""
-        # tutaj trzeba wrzucać wszystkie pola które mają być zapisywane 
         self.game_state.data["game_mode"] = self.game_mode
+        self.game_state.data["score"] = self.score  
         self.game_state.file_save()
 
     def _save_read(self):
         """metoda wczytująca to co przekaże obiekt game_state"""
         data = self.game_state.file_read()
-        # tutaj są przerzucane wartości ze słownika do pól klasy   
         self.game_mode = data["game_mode"]
+        self.score = data.get("score", 0)  
 
 def main():
     if __name__ == '__main__':
