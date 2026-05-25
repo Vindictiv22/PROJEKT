@@ -30,7 +30,7 @@ class MainGame:
         print("MISTRZ KLAWIATURY\n=================\n"
             "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny\n")
         self.game_mode = input()
-        print("'save' wykonuje zatespis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n")
+        print("'save' wykonuje zapis\n'quit' zakańcza grę\n'read' wczytuje poprzedni zapis\n")
         self._game_input()
         self._screen_update()
 
