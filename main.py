@@ -13,9 +13,9 @@ class MainGame:
         self.game_state = GameState()
         
         # System punktów
-        self.score = 0  # Całkowity wynik gracza
+        self.score = -2  # Całkowity wynik gracza
         self._start_time = 0.0  # Moment wyświetlenia słowa na ekranie
-        self._current_word = "testowe"  # Słowo do wpisania (na potrzeby testów)
+
 
         self._baza_slow = self._wczytaj_baze_slow()
         self._aktualne_slowo = ""
@@ -36,10 +36,12 @@ class MainGame:
         self._losuj_nowe_slowo()
 
         while self._game_running:
+            self._losuj_nowe_slowo()
             self._game_output()
             self._game_input()
             self._screen_update()
-            self._losuj_nowe_slowo()
+
+            
 
     def _main_menu(self):
         """menu główne gry"""
@@ -54,7 +56,7 @@ class MainGame:
     def _losuj_nowe_slowo(self):
         """Losuje słowo na podstawie aktualnego game_mode"""
         lista_slow = self._baza_slow[self.game_mode]
-        self._aktualne_slowo = random.choice(lista_slow)
+        self._input_string = random.choice(lista_slow)
 
 
     def _game_input(self):
@@ -77,8 +79,8 @@ class MainGame:
     def _calculate_score(self, elapsed_time):
         """Osobna metoda odpowiedzialna za system punktów"""
         # Sprawdzenie poprawności słowa (brak printów i brak time.sleep)
-        if self._input_string == self._current_word:
-            gained_points = len(self._current_word) - elapsed_time
+        if self._input_string == self._input_string:
+            gained_points = len(self._input_string) - elapsed_time
             
             if gained_points < 2:
                 gained_points = 2
@@ -100,12 +102,10 @@ class MainGame:
         # Wyświetlanie aktualnej liczby punktów na górze ekranu gry
         print(f"PUNKTY: {self.score}")
         print("=================")
-        print(f"wpisz słowo: {self._current_word}")
+        print(f"wpisz słowo: {self._input_string}")
         
         # Zapisujemy czas pokazania słowa
         self._start_time = time.time()
-  
-        print("wpisz słowo: ", self._aktualne_slowo)
 
     # Ogólnie to wiem że dwie poniższe metody są trochę nieprzemyślane pod kątem tego,
     # że każda zmienna jest oddzielnie zapisywana/wczytywana przez dodatkowy słownik.
