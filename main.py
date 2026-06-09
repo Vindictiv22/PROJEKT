@@ -42,7 +42,6 @@ class MainGame:
                 "1": ["test"],
                 "2": ["testowanie"],
                 "3": ["autotestowanie"],
-                "4": ["skibidi"],
             }
 
     def main_loop(self):
@@ -63,7 +62,7 @@ class MainGame:
         self._screen_update()
         print(
             "MISTRZ KLAWIATURY\n=================\n"
-            "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny | 4 - skibidi\n"
+            "wybierz poziom trudności:\n1 - łatwy | 2 - średni | 3 - trudny \n"
         )
         self.game_mode = input()
         print("Wybierz tryb gry\nnauka - tryb bez presji czasu | wyzwanie - tryb w którym zdobywasz punkty\n")
