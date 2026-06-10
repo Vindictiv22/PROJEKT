@@ -51,7 +51,7 @@ class MainGame:
             self._game_output()
             self._game_input()
             self._screen_update()
-            if self.score >=100:
+            if self.score >= 10_000:
                 self._mistrz_klawiatury()
                 
 
