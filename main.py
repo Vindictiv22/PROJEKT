@@ -5,9 +5,6 @@ import time
 from saves import GameState
 import time
 
-max_punkty = 1000
-rate_of_change_punkty = -20
-
 
 class MainGame:
     """Główna klasa zarządzająca zasobami gry"""
@@ -54,7 +51,15 @@ class MainGame:
             self._game_output()
             self._game_input()
             self._screen_update()
-        
+            if self.score >=100:
+                self._mistrz_klawiatury()
+                
+
+    def _mistrz_klawiatury(self):
+        print("GRATULACJE ZOSTAŁEŚ MISTRZEM KLAWIATURY\n"
+        "TEAZ MOŻESZ ROZPOCZĄĆ SWOJĄ PRZYGODĘ PONOWNIE\n")
+        self.score=0
+
     def _main_menu(self):
         """Menu główne gry"""
         self._screen_update()
@@ -134,7 +139,7 @@ class MainGame:
         """Wyświetlanie stanu gry"""
         if self.game_tryb =='wyzwanie':
             print(f"PUNKTY: {self.score}")
-            if self.combo_counter >= 10:
+            if self.combo_counter >= 5:
                 print(f" COMBO X{self.combo_counter}! ")
         print("=================")
         print(f"wpisz słowo: {self._aktualne_slowo}")
